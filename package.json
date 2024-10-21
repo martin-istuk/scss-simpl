@@ -1,6 +1,6 @@
 {
 	"name": "scss-simpl",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "scss-simpl is a lightweight SCSS library offering a set of reusable SCSS mixins for common styling needs. Apply multiple styles for multiple viewports in one step. Create grid layouts using named areas in one line of code. Set a background image with center/cover alignment. Clip overflowing text, with optional support for line clamping.",
 	"main": "scss-simpl.scss",
 	"scripts": {
