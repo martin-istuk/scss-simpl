@@ -1,0 +1,7 @@
+// MARK: bg-cover
+// SET BACKGROUND IMAGE AS COVER
+@mixin bg-cover($image) {
+	background: transparent url($image) center/cover no-repeat;
+}
+// USAGE:
+// @include bg-cover("path/to/image");

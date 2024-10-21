@@ -1,0 +1,61 @@
+// MARK: viewports
+// SET MULTIPLE RULES ACROSS VIEWPORTS
+@mixin viewports($config) {
+	$direction: if(map-get($config, use-max), use-max, use-min);
+	$breakpoints: map-get($config, $direction) or (global, 600px, 1200px, 1800px, 2400px);
+	$prop-maps: map-remove($config, use-min, use-max);
+	@for $i from 1 through length($breakpoints) {
+		$breakpoint: nth($breakpoints, $i);
+		@if $breakpoint == global {
+			// Set global styles
+			@include _style-rules($prop-maps, $i);
+		} @else {
+			// Set media query styles
+			@if ($direction == use-min) {
+				// Set min-width media queries
+				@include min-width($breakpoint) {
+					@include _style-rules($prop-maps, $i);
+				}
+			} @else {
+				// Set max-width media queries
+				@include max-width($breakpoint) {
+					@include _style-rules($prop-maps, $i);
+				}
+			}
+		}
+	}
+}
+// USAGE
+// @include viewports((
+//   font-size: (12px, _, 16px),
+//   background: (red, green),
+// ));
+
+// MARK: style-rules
+// EXPORT STYLE RULES
+@mixin _style-rules($prop-maps, $i) {
+	@each $property, $values in $prop-maps {
+		@if $i <= length($values) {
+			$value: nth($values, $i);
+			@if $value != "_" {
+				#{$property}: if(type-of($value) == string, unquote($value), $value);
+			}
+		}
+	}
+}
+
+// MARK: min-width
+// SET MEDIA QUERY BASED ON MIN-WIDTH
+@mixin min-width($res) {
+	@media screen and (min-width: $res) {
+		@content;
+	}
+}
+
+// MARK: max-width
+// SET MEDIA QUERY BASED ON MAX-WIDTH
+@mixin max-width($res) {
+	@media screen and (max-width: calc($res - 1px)) {
+		@content;
+	}
+}

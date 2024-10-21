@@ -1,0 +1,32 @@
+// MARK: grid-areas
+// DISPLAY AS GRID, SET GRID AREA LAYOUT AND GRID AREAS BY CLASS NAME
+@mixin grid-areas($rows...) {
+	display: grid;
+	$grid-template-areas: null;
+	@each $row in $rows {
+		$grid-row: unquote('"');
+		@each $selector in string.split($row, " ") {
+			@if ($selector == any) or ($selector == ".") or ($selector == ".") {
+				$grid-row: append($grid-row, unquote("."));
+			} @else {
+				$identifier: string.slice($selector, 1, 1);
+				$value: string.slice($selector, 2);
+				$grid-row: append($grid-row, unquote($value));
+				$grid-row: append($grid-row, unquote(" "));
+				@if ($identifier == unquote(".")) or ($identifier == unquote("#")) {
+					#{$selector} {
+						grid-area: unquote($value);
+					}
+				} @else {
+					@error 'Mixin "grid-areas()" requires quoted string(s) as arguments. Strings should contain CSS-style selectors for classes or IDs. Example: "@include grid-areas(".red .blue", ".green .green");"';
+				}
+			}
+		}
+		$grid-row: append($grid-row, unquote('"'));
+		$grid-template-areas: append($grid-template-areas, $grid-row);
+		$grid-template-areas: append($grid-template-areas, unquote(" "));
+	}
+	grid-template-areas: $grid-template-areas;
+}
+// USAGE:
+// @include grid-areas(".red .blue", ".green .green");

@@ -1,0 +1,20 @@
+// MARK: clip-text
+// CLIP TEXT WITH ELLIPSIS
+@mixin clip-text($maxWidth: auto, $numLines: 1) {
+	max-width: $maxWidth;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	// If line clamp is supported, set number of lines to $numLines
+	@supports (-webkit-line-clamp: $numLines) {
+		display: -webkit-box;
+		white-space: initial;
+		-webkit-line-clamp: $numLines;
+		-webkit-box-orient: vertical;
+	}
+}
+// USAGE:
+// @include clip-text();
+// @include clip-text(250px);
+// @include clip-text(auto, 3);
+// @include clip-text(250px, 3);
